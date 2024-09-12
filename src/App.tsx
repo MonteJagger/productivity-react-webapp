@@ -10,24 +10,6 @@ export type Task = {
 
 function App() {
   const [taskList, setTaskList] = React.useState<Task[]>([])
-  const [editingTask, setEditingTask] = React.useState<Task | null>(null)
-
-  const handleEditingTask = (task: Task) => {
-    setEditingTask(task)
-    console.log('handleEditingTask:', task);
-  }
-
-  const handleDoneEditingTask = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!editingTask) return;
-
-    console.log('Before update:', editingTask);
-
-    // setTasks(tasks.map(task => task.id === editingTask.id ? editingTask : task));
-    // console.log('After update:', editingTask, tasks);
-
-    setEditingTask(null);
-  }
 
   const handleAddTask = (taskText: string) => {
     const newTask: Task = {
@@ -43,17 +25,16 @@ function App() {
   }
 
   const handleUpdateTask = (updatedTask: Task) => {
-    console.log(updatedTask)
     const newTaskList = taskList.map(task => task.id === updatedTask.id ? updatedTask : task)
     setTaskList(newTaskList)
   }
 
   return (
-    <>
+    <div className="app">
       <h1>My Tasks</h1>
       <AddTask onAddTask={handleAddTask}/>
       <TaskList taskList={taskList} onRemoveTask={handleRemoveTask} onUpdateTask={handleUpdateTask}/>
-    </>
+    </div>
   )
 }
 

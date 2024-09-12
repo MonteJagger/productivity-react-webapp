@@ -1,5 +1,7 @@
 import React from 'react'
 import './AddTask.scss'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface AddTaskProps {
     onAddTask: (newTask: string) => void
@@ -15,7 +17,7 @@ function AddTask({ onAddTask }: AddTaskProps) {
         setTaskInput('') // clear input field
     }
     return (
-        <>
+        <div className="add-task">
             <form onSubmit={handleOnSubmit}>
                 <input
                     id="taskInput"
@@ -24,9 +26,11 @@ function AddTask({ onAddTask }: AddTaskProps) {
                     value={taskInput}
                     onChange={(e) => setTaskInput(e.target.value)}
                 />
-                <button type="submit">Add Task</button>
+                <button type="submit">
+                    <FontAwesomeIcon icon={faPlus} />
+                </button>
             </form>
-        </>
+        </div>
     )
 }
 

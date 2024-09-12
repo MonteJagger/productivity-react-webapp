@@ -1,6 +1,9 @@
 import './TaskList.scss'
 import { Task } from '../../App'
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons'
+import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 interface TaskListProps {
     taskList: Task[]
@@ -19,16 +22,17 @@ function TaskList({ taskList, onRemoveTask, onUpdateTask }: TaskListProps) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        console.log(editingTask)
         if (editingTask) {
             onUpdateTask(editingTask)
         }
         setEditingTask(null)
     }
 
+
     return (
         <>
-            <h5>Task List</h5>
+            {/* Task Title */}
+            { taskList.length !== 0 ? <h3 className="task-title">Task List</h3> : <></> }
             <ul>
                 {taskList.map((task: Task) => (
                     <li key={task.id}>
@@ -36,21 +40,36 @@ function TaskList({ taskList, onRemoveTask, onUpdateTask }: TaskListProps) {
                             editingTask?.id === task.id 
                             ?
                             <div>
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit}  className="edit-task-item">
                                     <input
                                         type="text"
                                         name="editTaskInput"
                                         onChange={(e) => setEditingTask({id: editingTask.id, text: e.target.value})}
                                         value={editingTask.text}
                                     />
-                                    <button type="submit">Save</button>
+                                    <div className="task-button-wrapper">
+                                        <button type="submit">
+                                            <FontAwesomeIcon icon={faCheck} />
+                                        </button>
+                                        <button type="button" onClick={() => onRemoveTask(task)}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                             :
-                            <div>
-                                <span>{task.text}</span>
-                                <button type="button" onClick={() => handleEditingTask(task)}>Edit</button>
-                                <button type="button" onClick={() => onRemoveTask(task)}>Delete</button>
+                            <div className="task-item">
+                                <p className="task-text" onClick={() => handleEditingTask(task)}>
+                                    {task.text}
+                                </p>
+                                <div className="task-button-wrapper">
+                                    <button type="button" onClick={() => handleEditingTask(task)}>
+                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                    </button>
+                                    <button type="button" onClick={() => onRemoveTask(task)}>
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                </div>
                             </div>
                         }
                     </li>
